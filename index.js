@@ -20,6 +20,6 @@ app.use('/', pokeRouter);
 app.use('/user', userRouter);
 
 
-app.listen(4000, ()=>{
+app.listen(6000, ()=>{
     console.log("Server on")
 })

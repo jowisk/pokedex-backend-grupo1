@@ -14,14 +14,6 @@ const getUserByMail = (mail) =>{
       .del(body)
     }
 
-
-
-
-
-
-
-
-
     
     module.exports = {
         getUserByMail,

@@ -25,7 +25,7 @@ router.post('/crear', async (req, resp) =>{
 });
 
 router.post('/login', async (req, resp) =>{
-    const body = req.body;
+    const body = req.body
     const newPoke = await pokeQueries.createPoke(body);
     resp.json(newPoke)
 });

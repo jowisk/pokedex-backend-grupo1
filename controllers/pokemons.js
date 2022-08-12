@@ -8,17 +8,29 @@ const getAll = () =>{
       .from('pokemon')
       .join('pokemoves','pokemon_id','pokemon.id')
       .join('moves','id','pokemoves.pokemon_id')
-      
-      
+           
 }
 
-
-
-const getPokeById = (id) =>{
-    return knex('pokemon')
+const getPokeById = async (id) =>{
+  let pokemonFinal = {datos_pokemon:{}, movimientos:{}}
+    await knex('pokemon')
       .where('id', id)
       .select('nombre', 'id', 'peso', 'altura', 'descripcion', 'img', 'hp', 'atk', 'def', 'satk', 'sdef', 'spd')
+  	.then((pokemon_array) => {
+      return pokemonFinal['datos_pokemon'] = pokemon_array[0]
+    })
+     knex
+    .select("moves.nombre")
+    .from("moves")
+    .innerJoin("pokemoves", "moves.id", "pokemoves.moves_id")
+    .innerJoin("pokemon", "pokemoves.pokemon_id", "pokemon.id")
+    .where("pokemon.id", pokemonFinal.datos_pokemon.id)
+    .then((movesOfPokemos) => {
+      return pokemonFinal['movimientos'] = movesOfPokemos
+      console.log(movesOfPokemos)
+    });
 
+    return pokemonFinal
 }
 
 const createPoke = (body) =>{
