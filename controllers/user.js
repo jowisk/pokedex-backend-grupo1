@@ -1,15 +1,29 @@
-const knexConfig = require("../knexfile");
-const knex = require("knex")(knexConfig.development);
+const configDB = require('../knexfile');
+const knex = require('knex')(configDB.development);
 
-const createUser = (body) => {
-  return knex("user").insert(body);
-};
+const getUserByMail = (mail) =>{
+    return knex('user')
+      .where('mail', mail)
+      .select('mail')
+  
+    } 
+  
+    const deleteUser = (mail) =>{
+      return knex('user')
+      .where('mail', mail)
+      .del(body)
+    }
 
-const findUser = (email) => {
-  return knex("user").where({ email }).first();
-};
 
-module.exports = {
-  createUser,
-  findUser,
-};
+
+
+
+
+
+
+
+    
+    module.exports = {
+        getUserByMail,
+        deleteUser
+    }

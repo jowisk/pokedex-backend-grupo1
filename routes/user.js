@@ -1,12 +1,23 @@
-const express = require("express");
-const { verifyToken } = require("../middlewares/validate-jwt");
-
+const express = require('express');
+const userQueries = require('../controllers/user')
 const router = express.Router();
 
-router.use("/", verifyToken);
 
-router.get("/", (req, res) => {
-  res.send("hola");
+// para un solo usuario
+router.get('/auth', async (req, resp) =>{
+    const mail = req.body;
+    const password = req.body;
+    const user = await userQueries.getUserBymail(mail);
+    resp.json(user)
 });
 
-module.exports = router;
+// para crear un usuario
+router.post('/register', async (req, resp) =>{
+    const mail = req.body;
+    const password = req.body;
+    const newUser = await userQueries.createUser(body);
+    resp.json(newUser)
+});
+
+
+module.exports = router
