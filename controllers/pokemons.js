@@ -2,22 +2,46 @@ const configDB = require('../knexfile');
 const knex = require('knex')(configDB.development);
 
 const getAll = () =>{
-    return knex
-      .column('nombre', 'id')
-      .select('*')
-      .from('pokemoves')
-      .join(
-        'moves',
-        'pokemoves.moves_id',
-        'moves.id'
-      )
+  return knex
+    .column('nombre', 'id')
+    .select('*')
+    .from('pokemon')
+    // .join('pokemoves','pokemon_id','pokemon.id')
+    // .join('moves','id','pokemoves.pokemon_id')
+         
 }
 
-const getPokeById = (id) =>{
-    return knex('pokemon')
-      .where('id', id)
-      .select('nombre', 'id', 'peso', 'altura', 'descripcion', 'img', 'hp', 'atk', 'def', 'satk', 'sdef', 'spd')
-
+const getPokeById = async (id) =>{
+  let pokemonFinal = {datos_pokemon:{}, movimientos:[], tipos:[]}
+ await knex('pokemon')
+  .where('pokemon.id', id)
+  .select('nombre', 'pokemon.id', 'peso', 'altura', 'descripcion', 'img', 'hp', 'atk', 'def', 'satk', 'sdef', 'spd')
+  .then((pokemon_array) => {
+    return pokemonFinal['datos_pokemon'] = pokemon_array[0]
+  })
+  await knex
+  .select("moves.nombre")
+  .from("moves")
+  .innerJoin("pokemoves", "moves.id", "pokemoves.moves_id")
+  .innerJoin("pokemon", "pokemoves.pokemon_id", "pokemon.id")
+  .where("pokemon.id", pokemonFinal.datos_pokemon.id)
+  .then((movesOfPokemos) => {
+    console.log(movesOfPokemos)
+    movesOfPokemos.map((movimiento)=>{pokemonFinal.movimientos.push(movimiento)})
+    return pokemonFinal
+    })
+    await knex
+  .select("types.nombre")
+  .from("types")
+  .innerJoin("poketypes", "types.id", "poketypes.types_id")
+  .innerJoin("pokemon", "poketypes.pokemon_id", "pokemon.id")
+  .where("pokemon.id", pokemonFinal.datos_pokemon.id)
+  .then((movesOfPokemos) => {
+    console.log(movesOfPokemos)
+    movesOfPokemos.map((tipo)=>{pokemonFinal.tipos.push(tipo)})
+    return pokemonFinal
+    })
+    return pokemonFinal
 }
 
 const createPoke = (body) =>{
