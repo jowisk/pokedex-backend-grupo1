@@ -1,15 +1,29 @@
 const configDB = require('../knexfile');
 const knex = require('knex')(configDB.development);
 
-const getAll = () =>{
-  return knex
-    .column('nombre', 'id')
-    .select('*')
-    .from('pokemon')
-    // .join('pokemoves','pokemon_id','pokemon.id')
-    // .join('moves','id','pokemoves.pokemon_id')
-         
-}
+const getAll = async () => {
+  let listadoFinal = [];
+  const arrayPokemon = await knex("pokemon")
+    .select("nombre", "id", "img")
+    .then((res) => {
+      return res;
+    });
+  listadoFinal = await Promise.all(
+    arrayPokemon.map(async (pokemon, index) => ({
+      ...pokemon,
+      types: await knex
+        .select("types.nombre")
+        .from("types")
+        .innerJoin("poketypes", "types.id", "poketypes.types_id")
+        .innerJoin("pokemon", "poketypes.pokemon_id", "pokemon.id")
+        .where("pokemon.id", pokemon.id)
+        .then((res) => {
+          return res;
+        }),
+    }))
+  );
+  return listadoFinal;
+};
 
 const getPokeById = async (id) =>{
   let pokemonFinal = {datos_pokemon:{}, movimientos:[], tipos:[]}
