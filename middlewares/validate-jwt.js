@@ -1,27 +1,28 @@
 const jwt = require("jsonwebtoken");
 
-const SIGNATURE = "PokedexL0ginToken";
+const TOKEN_SECRET = "PokedexL0ginToken";
 
-const verifyToken = (req, res, next) => {
+const verifyToken = (req, resp, next) => {
+  console.log("pasa por el middleware");
   const token = req.header("auth-token");
   if (!token) {
-    return res.status(401).json({
+    return resp.status(401).json({
       error: "Access denied",
     });
   }
 
   try {
-    const verified = jwt.verify(token, SIGNATURE);
+    const verified = jwt.verify(token, TOKEN_SECRET);
     req.user = verified;
     next();
   } catch (error) {
-    res.status(400).json({
+    resp.status(400).json({
       error: "Invalid token",
     });
   }
 };
 
 module.exports = {
-  SIGNATURE,
+  TOKEN_SECRET,
   verifyToken,
 };

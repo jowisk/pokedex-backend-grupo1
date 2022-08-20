@@ -5,11 +5,16 @@ const createUser = (body) => {
   return knex("user").insert(body);
 };
 
-const findUser = (email) => {
-  return knex("user").where({ email }).first();
+const findUser = (mail) => {
+  return knex("user").where({ mail }).first();
+};
+
+const getUserByMail = (mail) => {
+  return knex("user").where("mail", mail).select("mail");
 };
 
 module.exports = {
   createUser,
   findUser,
+  getUserByMail,
 };

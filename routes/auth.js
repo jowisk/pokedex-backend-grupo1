@@ -1,14 +1,14 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { SIGNATURE } = require("../controllers/user");
+const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
 
 const userController = require("../controllers/user");
 const { response } = require("express");
 
-const router = express.router();
+const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, resp) => {
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(req.body.password, salt);
   const newUser = {
@@ -16,17 +16,16 @@ router.post("/register", async (req, res) => {
     password,
   };
   const response = await userController.createUser(newUser);
-  res.json({
+  resp.json({
     success: true,
     response,
   });
 });
 
-router.post("/login", async (req, res) => {
-  const user = await userController.findUser(req.body.email);
-
+router.post("/login", async (req, resp) => {
+  const user = await userController.findUser(req.body.mail);
   if (!user) {
-    res.json({
+    resp.json({
       error: "User not found",
     });
   }
@@ -34,20 +33,21 @@ router.post("/login", async (req, res) => {
   const validPass = await bcrypt.compare(req.body.password, user.password);
 
   if (!validPass) {
-    return res.json({
+    return resp.json({
       error: "Invalid credentials",
     });
   }
 
   const token = jwt.sign(
     {
-      name: user.email,
       id: user.id,
+      name: user.mail,
+      password: user.password,
     },
-    SIGNATURE
+    TOKEN_SECRET
   );
 
-  res.json({
+  resp.json({
     data: "Success!",
     token,
   });
