@@ -53,7 +53,6 @@ const getPokemonById = async (id) => {
     .innerJoin("pokemon", "pokemoves.pokemon_id", "pokemon.id")
     .where("pokemon.id", pokemonFinal.datos_pokemon.id)
     .then((movesOfPokemos) => {
-      console.log(movesOfPokemos);
       movesOfPokemos.map((movimiento) => {
         pokemonFinal.movimientos.push(movimiento);
       });
@@ -66,12 +65,12 @@ const getPokemonById = async (id) => {
     .innerJoin("pokemon", "poketypes.pokemon_id", "pokemon.id")
     .where("pokemon.id", pokemonFinal.datos_pokemon.id)
     .then((movesOfPokemos) => {
-      console.log(movesOfPokemos);
       movesOfPokemos.map((tipo) => {
         pokemonFinal.tipos.push(tipo);
       });
       return pokemonFinal;
     });
+  console.log(pokemonFinal);
   return pokemonFinal;
 };
 
