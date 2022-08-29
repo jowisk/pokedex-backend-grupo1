@@ -8,6 +8,7 @@ const { response } = require("express");
 
 const router = express.Router();
 
+//localhost:4000/auth/register
 router.post("/register", async (req, resp) => {
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(req.body.password, salt);
@@ -21,7 +22,7 @@ router.post("/register", async (req, resp) => {
     response,
   });
 });
-
+//localhost:4000/auth/login
 router.post("/login", async (req, resp) => {
   const user = await userController.findUser(req.body.mail);
   if (!user) {

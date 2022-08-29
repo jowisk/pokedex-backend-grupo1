@@ -2,7 +2,6 @@ const express = require("express");
 const userQueries = require("../controllers/user");
 const router = express.Router();
 
-// para un solo usuario
 router.get("/auth", async (req, resp) => {
   const mail = req.body;
   const password = req.body;
@@ -10,7 +9,6 @@ router.get("/auth", async (req, resp) => {
   resp.json(user);
 });
 
-// para crear un usuario
 router.post("/register", async (req, resp) => {
   const mail = req.body;
   const password = req.body;

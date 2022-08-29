@@ -1,7 +1,7 @@
 const { json } = require("body-parser");
 const express = require("express");
 const router = express.Router();
-const { verifyToken } = require("../middlewares/validate-jwt");
+const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
 
 router.use("/", verifyToken);
 
