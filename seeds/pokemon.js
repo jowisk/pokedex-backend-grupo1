@@ -62,6 +62,8 @@ exports.seed = async function (knex) {
     { id: 29, nombre: "Rayo" },
     { id: 30, nombre: "Corte" },
     { id: 31, nombre: "Placaje" },
+    { id: 32, nombre: "Skate" },
+    { id: 33, nombre: "Smoke weed" },
   ]);
 
   await knex("pokemon").insert([
@@ -95,7 +97,7 @@ exports.seed = async function (knex) {
     },
     {
       id: 3,
-      nombre: "Infernapepepepeppepe",
+      nombre: "Infernape",
       peso: "15",
       altura: "2",
       descripcion: "Desc del mejor pokimon de la historia",
@@ -107,11 +109,62 @@ exports.seed = async function (knex) {
       sdef: "3",
       spd: "3",
     },
+    {
+      id: 4,
+      nombre: "Jowi",
+      peso: "780",
+      altura: "176",
+      descripcion: "god no?",
+      img: "https://i.ibb.co/QmVK2sL/image.png",
+      hp: "100",
+      atk: "420",
+      def: "70",
+      satk: "420",
+      sdef: "90",
+      spd: "100",
+    },
+    {
+      id: 5,
+      nombre: "Mica mica mica mica",
+      peso: "650",
+      altura: "161",
+      descripcion: "MICA SENPAI",
+      img: "https://i.ibb.co/r43hNG4/image-1.png",
+      hp: "23",
+      atk: "40",
+      def: "70",
+      satk: "42",
+      sdef: "90",
+      spd: "14",
+    },
+    {
+      id: 6,
+      nombre: "Azapato",
+      peso: "120",
+      altura: "20",
+      descripcion: "talle 42",
+      img: "https://i.ibb.co/dGdPdry/image-2.png",
+      hp: "42",
+      atk: "50",
+      def: "70",
+      satk: "89",
+      sdef: "102",
+      spd: "5",
+    },
   ]);
 
   await knex("pokemoves").insert([
     { moves_id: 1, pokemon_id: 1 },
     { moves_id: 2, pokemon_id: 1 },
+    { moves_id: 3, pokemon_id: 2 },
+    { moves_id: 4, pokemon_id: 2 },
+    { moves_id: 5, pokemon_id: 3 },
+    { moves_id: 6, pokemon_id: 3 },
+    { moves_id: 32, pokemon_id: 4 },
+    { moves_id: 33, pokemon_id: 4 },
+    { moves_id: 9, pokemon_id: 5 },
+    { moves_id: 10, pokemon_id: 5 },
+    { moves_id: 5, pokemon_id: 6 },
   ]);
 
   await knex("poketypes").insert([
@@ -121,5 +174,10 @@ exports.seed = async function (knex) {
     { types_id: 4, pokemon_id: 2 },
     { types_id: 5, pokemon_id: 3 },
     { types_id: 6, pokemon_id: 3 },
+    { types_id: 14, pokemon_id: 4 },
+    { types_id: 3, pokemon_id: 4 },
+    { types_id: 11, pokemon_id: 5 },
+    { types_id: 14, pokemon_id: 5 },
+    { types_id: 3, pokemon_id: 6 },
   ]);
 };

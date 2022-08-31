@@ -26,7 +26,12 @@ const getAll = async () => {
 };
 
 const getPokemonById = async (id) => {
-  let pokemonFinal = { datos_pokemon: {}, movimientos: [], tipos: [] };
+  let pokemonFinal = {
+    datos_pokemon: {},
+    movimientos: [],
+    tipos: [],
+    stats: [],
+  };
   await knex("pokemon")
     .where("pokemon.id", id)
     .select(
@@ -70,7 +75,14 @@ const getPokemonById = async (id) => {
       });
       return pokemonFinal;
     });
-  console.log(pokemonFinal);
+  // await knex("pokemon")
+  //   .select("hp", "atk", "def", "satk", "sdef", "spd")
+  //   .where("pokemon.id", pokemonFinal.datos_pokemon.id)
+  //   .then((stat) => {
+  //     pokemonFinal.stats.push(stat);
+  //     return pokemonFinal;
+  //   });
+  // console.log(pokemonFinal);
   return pokemonFinal;
 };
 

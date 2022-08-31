@@ -12,6 +12,7 @@ const router = express.Router();
 router.post("/register", async (req, resp) => {
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(req.body.password, salt);
+
   const newUser = {
     ...req.body,
     password,
@@ -22,36 +23,45 @@ router.post("/register", async (req, resp) => {
     response,
   });
 });
+
 //localhost:4000/auth/login
 router.post("/login", async (req, resp) => {
-  const user = await userController.findUser(req.body.mail);
-  if (!user) {
+  try {
+    const user = await userController.findUser(req.body.mail);
+    console.log("req.body.mail", req.body.mail);
+    console.log("req.body.password", req.body.password);
+    console.log("user", user);
+
+    if (!user) {
+      resp.status(400);
+      alert("usuario incorrecto");
+    }
+
+    const validPass = await bcrypt.compareSync(
+      req.body.password,
+      user[0].password
+    );
+
+    if (!validPass) {
+      return resp.status(400);
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        name: user.mail,
+        password: user.password,
+      },
+      TOKEN_SECRET
+    );
+
     resp.json({
-      error: "User not found",
+      data: "Success!",
+      token: token,
     });
+  } catch (error) {
+    console.log(error);
   }
-
-  const validPass = await bcrypt.compare(req.body.password, user.password);
-
-  if (!validPass) {
-    return resp.json({
-      error: "Invalid credentials",
-    });
-  }
-
-  const token = jwt.sign(
-    {
-      id: user.id,
-      name: user.mail,
-      password: user.password,
-    },
-    TOKEN_SECRET
-  );
-
-  resp.json({
-    data: "Success!",
-    token,
-  });
 });
 
 module.exports = router;
