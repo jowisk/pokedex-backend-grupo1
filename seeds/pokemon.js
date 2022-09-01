@@ -63,7 +63,7 @@ exports.seed = async function (knex) {
     { id: 30, nombre: "Corte" },
     { id: 31, nombre: "Placaje" },
     { id: 32, nombre: "Skate" },
-    { id: 33, nombre: "Smoke weed" },
+    { id: 33, nombre: "Develop" },
   ]);
 
   await knex("pokemon").insert([
