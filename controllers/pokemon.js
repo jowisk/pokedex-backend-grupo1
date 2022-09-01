@@ -75,14 +75,40 @@ const getPokemonById = async (id) => {
       });
       return pokemonFinal;
     });
-  // await knex("pokemon")
-  //   .select("hp", "atk", "def", "satk", "sdef", "spd")
-  //   .where("pokemon.id", pokemonFinal.datos_pokemon.id)
-  //   .then((stat) => {
-  //     pokemonFinal.stats.push(stat);
-  //     return pokemonFinal;
-  //   });
-  // console.log(pokemonFinal);
+  await knex("pokemon")
+    .select("hp", "atk", "def", "satk", "sdef", "spd")
+    .where("pokemon.id", pokemonFinal.datos_pokemon.id)
+    .then((stat) => {
+      console.log(stat);
+      const keyNames = Object.keys(stat[0]);
+      pokemonFinal.stats.push({
+        nombre: keyNames[0],
+        value: stat[0].hp,
+      });
+      pokemonFinal.stats.push({
+        nombre: keyNames[1],
+        value: stat[0].atk,
+      });
+      pokemonFinal.stats.push({
+        nombre: keyNames[2],
+        value: stat[0].def,
+      });
+      pokemonFinal.stats.push({
+        nombre: keyNames[3],
+        value: stat[0].satk,
+      });
+      pokemonFinal.stats.push({
+        nombre: keyNames[4],
+        value: stat[0].sdef,
+      });
+      pokemonFinal.stats.push({
+        nombre: keyNames[5],
+        value: stat[0].spd,
+      });
+
+      return pokemonFinal;
+    });
+  console.log(pokemonFinal);
   return pokemonFinal;
 };
 

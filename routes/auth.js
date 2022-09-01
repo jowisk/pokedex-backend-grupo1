@@ -34,7 +34,6 @@ router.post("/login", async (req, resp) => {
 
     if (!user) {
       resp.status(400);
-      alert("usuario incorrecto");
     }
 
     const validPass = await bcrypt.compareSync(

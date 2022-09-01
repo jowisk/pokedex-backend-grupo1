@@ -1,12 +1,14 @@
 const { json } = require("body-parser");
 const express = require("express");
 const router = express.Router();
+const pokemonQueries = require("../controllers/pokemon");
 const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
 
 router.use("/", verifyToken);
 
-router.post("/", (req, resp) => {
-  const token = req.header("auth-token");
+router.post("/", async (req, resp) => {
+  const body = req.body;
+  const newPokemon = await pokemonQueries.createPokemon(body);
   resp.json("success!");
 });
 
